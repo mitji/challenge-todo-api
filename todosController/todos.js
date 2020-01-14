@@ -80,15 +80,16 @@ class TodosController {
 
   async doneTodo(req, res) {
     const {id} = req.params;
+    if(!ObjectId.isValid(id) && !id.match(/^[a-fA-F0-9]{24}$/)){
+      return res.status(404).send({
+        success: 'false',
+        message: 'todo does not exist',
+      });
+    }
+
     try {
-      // get quote
-      const task = await Todo.findById(id);
-      console.log('body', req.body)
-      // set done field to true
-      console.log('\n\n--->task', task);
-      // update todo
-
-
+      const taskDone = await Todo.findByIdAndUpdate(id, {done: true}, {new:true});
+      return res.status(200).json(taskDone);
     } catch (error) {
       res.status(400).send({
         success: 'false',
