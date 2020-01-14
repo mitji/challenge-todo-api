@@ -78,6 +78,25 @@ class TodosController {
     }
   }
 
+  async doneTodo(req, res) {
+    const {id} = req.params;
+    try {
+      // get quote
+      const task = await Todo.findById(id);
+      console.log('body', req.body)
+      // set done field to true
+      console.log('\n\n--->task', task);
+      // update todo
+
+
+    } catch (error) {
+      res.status(400).send({
+        success: 'false',
+        message: 'Unable to set todo as completed'
+      })
+    }
+  }
+
   async deleteTodo(req, res){
     const {id} = req.params;
     if(!ObjectId.isValid(id) && !id.match(/^[a-fA-F0-9]{24}$/)){
